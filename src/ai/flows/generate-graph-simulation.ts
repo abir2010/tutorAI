@@ -63,7 +63,7 @@ const graphSimulationPrompt = ai.definePrompt({
   - The simulation should show the active node and highlight visited nodes and traversed edges.
 
   **For Dijkstra's and Bellman-Ford:**
-  - Node properties: \`color\` ('default', 'visited', 'active'), \`distance\` (number, Infinity initially), \`parent\` (string|null).
+  - Node properties: \`color\` ('default', 'visited', 'active'), \`distance\` (number or the string "Infinity", with "Infinity" for initial/unreachable nodes), \`parent\` (string|null).
   - Edge properties: \`color\` ('default', 'traversed', 'active').
   - The simulation should show distances being updated, the path being built, and the active node/edge being considered. Once the algorithm is complete, the final step should highlight the shortest path from start to end node, if found.
 
@@ -73,7 +73,7 @@ const graphSimulationPrompt = ai.definePrompt({
 
   **For Floyd-Warshall Algorithm:**
   - The visualization should be a matrix.
-  - State properties: \`distanceMatrix\` (a 2D array of distances with a header row and column for node IDs), \`highlight\` object with {k: nodeId, i: nodeId, j: nodeId} representing the intermediate, source, and destination nodes being considered.
+  - State properties: \`distanceMatrix\` (a 2D array of distances (numbers or the string "Infinity") with a header row and column for node IDs), \`highlight\` object with {k: nodeId, i: nodeId, j: nodeId} representing the intermediate, source, and destination nodes being considered.
   - "nodes" and "edges" can be omitted for Floyd-Warshall after the first step, focus on the matrix.
 
   ---
@@ -84,8 +84,8 @@ const graphSimulationPrompt = ai.definePrompt({
       {
         \\"nodes\\": [
           {\\"id\\":\\"A\\",\\"x\\":50,\\"y\\":150,\\"color\\":\\"active\\",\\"distance\\":0,\\"parent\\":null},
-          {\\"id\\":\\"B\\",\\"x\\":250,\\"y\\":50,\\"color\\":\\"default\\",\\"distance\\":Infinity,\\"parent\\":null},
-          {\\"id\\":\\"C\\",\\"x\\":250,\\"y\\":250,\\"color\\":\\"default\\",\\"distance\\":Infinity,\\"parent\\":null}
+          {\\"id\\":\\"B\\",\\"x\\":250,\\"y\\":50,\\"color\\":\\"default\\",\\"distance\\":\\"Infinity\\",\\"parent\\":null},
+          {\\"id\\":\\"C\\",\\"x\\":250,\\"y\\":250,\\"color\\":\\"default\\",\\"distance\\":\\"Infinity\\",\\"parent\\":null}
         ],
         \\"edges\\": [
           {\\"source\\":\\"A\\",\\"target\\":\\"B\\",\\"weight\\":10,\\"color\\":\\"default\\"},

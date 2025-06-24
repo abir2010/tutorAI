@@ -160,7 +160,7 @@ function GraphVisualizer({ steps }: { steps: VisualizationStep[] }) {
                             >
                                 <span className="text-sm font-bold">{node.id}</span>
                                 {node.distance !== undefined && (
-                                    <span className="text-xs">{node.distance === Infinity ? '∞' : node.distance}</span>
+                                    <span className="text-xs">{node.distance === 'Infinity' || node.distance === Infinity ? '∞' : node.distance}</span>
                                 )}
                             </div>
                         );
@@ -209,7 +209,7 @@ function FloydWarshallVisualizer({ step }: { step: VisualizationStep }) {
                                     const isK = step.highlight && (step.highlight.k === nodeIds[i] || step.highlight.k === nodeIds[j]);
                                     return (
                                         <td key={j} className={cn("p-2 border border-border", isHighlighted ? "bg-primary/30" : isK ? "bg-accent/20" : "")}>
-                                            {dist === Infinity ? '∞' : String(dist)}
+                                            {dist === 'Infinity' || dist === Infinity ? '∞' : String(dist)}
                                         </td>
                                     )
                                 })}
