@@ -23,5 +23,12 @@
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules",
+    "src/app/tutor",
+    "src/app/simulations/page.tsx",
+    "src/app/simulations/actions.ts",
+    "src/components/header.tsx",
+    "src/ai/flows/generate-step-by-step-explanation.ts"
+  ]
 }
