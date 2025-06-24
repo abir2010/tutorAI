@@ -118,6 +118,7 @@ function GraphVisualizer({ steps }: { steps: VisualizationStep[] }) {
                                 traversed: "stroke-primary/70",
                                 included: "stroke-accent stroke-[3]",
                                 discarded: "stroke-destructive/50 stroke-dasharray-5",
+                                path: "stroke-accent stroke-[3]",
                                 default: "stroke-border",
                             }
 
@@ -127,7 +128,7 @@ function GraphVisualizer({ steps }: { steps: VisualizationStep[] }) {
                                         x1={sourceNode.x} y1={sourceNode.y}
                                         x2={targetNode.x} y2={targetNode.y}
                                         className={cn("transition-all", colorClasses[edge.color || 'default'] || 'stroke-border')}
-                                        strokeWidth={2}
+                                        strokeWidth={edge.color === 'path' || edge.color === 'included' ? 3 : 2}
                                     />
                                     {edge.weight !== undefined && (
                                         <text
@@ -150,6 +151,7 @@ function GraphVisualizer({ steps }: { steps: VisualizationStep[] }) {
                          const colorClasses: {[key: string]: string} = {
                             active: "bg-primary text-primary-foreground border-primary",
                             visited: "bg-primary/30 border-primary/50",
+                            path: "bg-accent text-accent-foreground border-accent",
                             default: "bg-card border-border",
                          }
                         return (

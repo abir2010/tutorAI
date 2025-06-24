@@ -37,6 +37,7 @@ const graphSimulationPrompt = ai.definePrompt({
   output: {schema: GraphSimulationOutputSchema},
   prompt: `You are an expert in graph algorithms. Your task is to generate a simulation for a given graph algorithm and its parameters.
   The output should be a detailed step-by-step description and a JSON string for visualization.
+  You MUST follow the algorithmic steps precisely. For example, for a graph with edges (A-C:9), (C-F:2), (F-E:9), the shortest path from A to E is A -> C -> F -> E with a total weight of 20.
 
   Algorithm Name: {{{algorithmName}}}
   Graph Data: {{{graphData}}}
@@ -72,7 +73,25 @@ const graphSimulationPrompt = ai.definePrompt({
   **For Dijkstra's and Bellman-Ford:**
   - Node properties: \`color\` ('default', 'visited', 'active'), \`distance\` (number or the string "Infinity", with "Infinity" for initial/unreachable nodes), \`parent\` (string|null).
   - Edge properties: \`color\` ('default', 'traversed', 'active').
-  - The simulation should show distances being updated, the path being built, and the active node/edge being considered. Once the algorithm is complete, the final step should highlight the shortest path from start to end node, if found.
+  - The simulation should show distances being updated, the path being built, and the active node/edge being considered.
+  - Once the algorithm is complete, the final step should highlight the shortest path from start to end node if found. Set the 'color' property of nodes and edges on the path to 'path'.
+
+  **Specifics for Dijkstra's Algorithm:**
+  1. Initialize all distances to "Infinity" except for the start node, which is 0. Set all parents to null.
+  2. Maintain a set of unvisited nodes, initially containing all nodes.
+  3. At each step, select the unvisited node with the smallest known distance to be the 'active' node.
+  4. For the 'active' node, consider its unvisited neighbors. For each neighbor, if the path through the active node is shorter than the neighbor's current distance, update the neighbor's distance and set its parent to the 'active' node.
+  5. After considering all neighbors, mark the 'active' node as 'visited'.
+  6. Repeat until all reachable nodes are visited.
+  7. In the final step, trace back from the end node using the 'parent' property to highlight the shortest path.
+
+  **Specifics for Bellman-Ford Algorithm:**
+  1. Initialize all distances to "Infinity" except for the start node, which is 0. Set all parents to null.
+  2. For |V|-1 iterations (where |V| is the number of nodes):
+     - For each edge (u, v) with weight w in the graph:
+       - If \`distance(u) + w < distance(v)\`, update \`distance(v)\` to \`distance(u) + w\` and set \`parent(v)\` to \`u\`.
+     - Show the state of distances after each full iteration over all edges. This is one step in the visualization.
+  3. After the main loop, trace back from the end node using the 'parent' property to highlight the shortest path.
 
   **For Kruskal's Algorithm:**
   - Edge properties: \`color\` ('default', 'active', 'included', 'discarded').
