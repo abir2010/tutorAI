@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import { Sidebar } from '@/components/sidebar';
+import { MobileHeader } from '@/components/mobile-header';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -24,7 +25,8 @@ export default function RootLayout({
       <body className="font-body antialiased">
         <div>
           <Sidebar />
-          <main className="lg:pl-64">
+          <MobileHeader />
+          <main className="lg:pl-64 pt-14 lg:pt-0">
             <div className="py-10">
               {children}
             </div>
