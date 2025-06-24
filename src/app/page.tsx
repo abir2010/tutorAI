@@ -24,7 +24,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loader2, Mic, Send } from "lucide-react";
+import { Loader2, Mic, Send, Sparkles } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { handleTutorRequest } from "./actions";
 import type { ReasonAboutHelpfulInformationOutput } from "@/ai/flows/reason-about-helpful-information";
@@ -119,7 +119,10 @@ export default function TutorPage() {
       <div className="mx-auto max-w-3xl">
           <Card>
             <CardHeader>
-              <CardTitle>Ask TutorAI</CardTitle>
+              <CardTitle className="flex items-center gap-2">
+                <Sparkles className="h-7 w-7 text-primary" />
+                <span>Ask TutorAI</span>
+              </CardTitle>
               <CardDescription>Select a subject and ask your question to get a detailed explanation.</CardDescription>
             </CardHeader>
             <CardContent>
