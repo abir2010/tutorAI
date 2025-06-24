@@ -69,6 +69,7 @@ type VisualizationStep = {
   highlighted: number[];
   sorted?: number[];
   found_at?: number | null;
+  stepDescription: string;
 };
 
 export default function SimulationsPage() {
@@ -105,8 +106,10 @@ export default function SimulationsPage() {
 
       const result = await handleAlgorithmSimulation({
         algorithmName: values.algorithm,
-        parameters: parameters
+        array: `[${values.arrayInput}]`,
+        target: values.target ? Number(values.target) : undefined,
       });
+
       if (result.success) {
         setSimulationData(result.data);
       } else {
@@ -230,6 +233,7 @@ const SimulationSkeleton = () => (
       <Skeleton className="h-16 w-16" />
       <Skeleton className="h-16 w-16" />
     </div>
+    <Skeleton className="h-12 w-full" />
     <Skeleton className="h-6 w-3/4" />
     <Skeleton className="h-4 w-full" />
     <Skeleton className="h-4 w-5/6" />
@@ -284,6 +288,11 @@ function SimulationDisplay({ data }: { data: AlgorithmSimulationOutput }) {
               })}
            </div>
          </div>
+        
+         <div className="p-4 bg-muted/50 rounded-lg min-h-[4rem] flex items-center justify-center">
+            <p className="text-sm text-muted-foreground font-mono text-center">{currentStepData.stepDescription || ' '}</p>
+         </div>
+
          <div className="flex items-center justify-between gap-4 pt-2">
             <span className="text-sm text-muted-foreground w-28">Step: {step + 1} / {visualizationSteps.length}</span>
             <div className="flex items-center gap-2">
@@ -297,7 +306,7 @@ function SimulationDisplay({ data }: { data: AlgorithmSimulationOutput }) {
          </div>
        </div>
        <div>
-         <h3 className="font-semibold text-lg mb-2">Description</h3>
+         <h3 className="font-semibold text-lg mb-2">Algorithm Description</h3>
          <p className="text-muted-foreground whitespace-pre-wrap font-sans text-sm leading-relaxed">{data.simulationDescription}</p>
        </div>
     </div>

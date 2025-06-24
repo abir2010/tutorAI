@@ -5,7 +5,8 @@ import { generateAlgorithmSimulation, AlgorithmSimulationInput, AlgorithmSimulat
 
 const formSchema = z.object({
   algorithmName: z.string(),
-  parameters: z.record(z.any()),
+  array: z.string(),
+  target: z.number().optional(),
 });
 
 type Result = 
@@ -20,8 +21,8 @@ export async function handleAlgorithmSimulation(values: z.infer<typeof formSchem
 
   const input: AlgorithmSimulationInput = {
     algorithmName: parsed.data.algorithmName,
-    array: parsed.data.parameters.array,
-    target: parsed.data.parameters.target,
+    array: parsed.data.array,
+    target: parsed.data.target,
   };
 
   try {
