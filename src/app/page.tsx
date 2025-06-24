@@ -4,6 +4,8 @@ import { useState, useTransition, useEffect, useRef } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import {
   Form,
   FormControl,
@@ -193,7 +195,11 @@ export default function TutorPage() {
                 {isPending && <ExplanationSkeleton />}
                 {error && <div className="text-destructive p-4 bg-destructive/10 rounded-md">{error}</div>}
                 {explanation && (
-                  <pre className="whitespace-pre-wrap font-sans text-base text-foreground/90 leading-relaxed">{explanation}</pre>
+                  <div className="markdown">
+                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                      {explanation}
+                    </ReactMarkdown>
+                  </div>
                 )}
               </CardContent>
             </Card>

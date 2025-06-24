@@ -17,7 +17,7 @@ const ReasonAboutHelpfulInformationInputSchema = z.object({
 export type ReasonAboutHelpfulInformationInput = z.infer<typeof ReasonAboutHelpfulInformationInputSchema>;
 
 const ReasonAboutHelpfulInformationOutputSchema = z.object({
-  explanation: z.string().describe('A step-by-step explanation of the answer, tailored to the student\u2019s question and subject.'),
+  explanation: z.string().describe('A step-by-step explanation of the answer, tailored to the student\u2019s question and subject. The explanation should be formatted in Markdown.'),
 });
 export type ReasonAboutHelpfulInformationOutput = z.infer<typeof ReasonAboutHelpfulInformationOutputSchema>;
 
@@ -52,6 +52,8 @@ const explanationPrompt = ai.definePrompt({
   First use the reasoningTool to determine the most helpful information to include in the explanation.  
   Then, provide a detailed step-by-step explanation that is tailored to the student's question and subject.  
   Make sure that the explanation uses the reasoning tool's output to determine the best way to help the student.
+
+  Format the entire explanation in Markdown. Use headings, lists, bold text, and code blocks where appropriate to make the explanation clear and easy to read.
 `,
 });
 

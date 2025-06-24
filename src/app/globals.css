@@ -67,3 +67,54 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+  .markdown {
+    @apply text-base leading-relaxed;
+  }
+  .markdown h1 {
+    @apply text-3xl font-bold mt-6 mb-4 pb-2 border-b;
+  }
+  .markdown h2 {
+    @apply text-2xl font-bold mt-6 mb-4 pb-2 border-b;
+  }
+  .markdown h3 {
+    @apply text-xl font-bold mt-6 mb-4;
+  }
+  .markdown p {
+    @apply mb-4;
+  }
+  .markdown ul {
+    @apply list-disc list-inside mb-4 pl-4;
+  }
+  .markdown ol {
+    @apply list-decimal list-inside mb-4 pl-4;
+  }
+  .markdown li {
+    @apply mb-2;
+  }
+  .markdown code {
+    @apply bg-muted text-muted-foreground px-2 py-1 rounded-md font-mono text-sm;
+  }
+  .markdown pre {
+    @apply bg-muted p-4 rounded-md overflow-x-auto;
+  }
+  .markdown pre code {
+    @apply bg-transparent p-0;
+  }
+  .markdown blockquote {
+    @apply border-l-4 border-border pl-4 italic text-muted-foreground my-4;
+  }
+  .markdown a {
+    @apply text-primary underline hover:text-primary/80;
+  }
+  .markdown table {
+    @apply w-full my-4 border-collapse border border-border;
+  }
+  .markdown th {
+    @apply border border-border px-4 py-2 text-left font-bold;
+  }
+  .markdown td {
+    @apply border border-border px-4 py-2;
+  }
+}
