@@ -13,6 +13,9 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: 'TutorAI',
   description: 'Your personal AI tutor for Math, Programming, and Web Development.',
+  icons: {
+    icon: '/favicon.ico',
+  },
 };
 
 export default function RootLayout({
