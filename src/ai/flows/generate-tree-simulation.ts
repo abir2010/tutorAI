@@ -58,12 +58,16 @@ const treeSimulationPrompt = ai.definePrompt({
   **Algorithm-Specific Visualization State:**
 
   **For Traversals (In-order, Pre-order, Post-order):**
-  - The simulation must show the recursive traversal path.
   - Node properties: \`color\` ('default', 'active', 'visited').
-    - 'active': The node currently being considered by the algorithm.
+    - 'active': The node currently being considered by the algorithm, but not yet added to the traversal order.
     - 'visited': The node has been processed and its value added to the traversal order.
   - The \`traversalOrder\` array should be built up as the simulation progresses.
   - The \`found_at\` property MUST be \`null\` in every step.
+  - Follow the specific order for each traversal type:
+    - **In-order:** Process left child, then the node itself, then the right child.
+    - **Pre-order:** Process the node itself, then its left child, then its right child.
+    - **Post-order:** Process the left child, then the right child, then the node itself.
+  - Your simulation steps must clearly show the recursive calls and backtracking. A node becomes 'active' when it is first reached. It becomes 'visited' only when its value is added to the \`traversalOrder\` array according to the specific traversal logic.
 
   **For Binary Search:**
   - Node properties: \`color\` ('default', 'active', 'path').
