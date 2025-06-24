@@ -1,10 +1,11 @@
+import { MobileHeader } from '@/components/mobile-header';
+import { MobileSidebar } from '@/components/mobile-sidebar';
+import { Sidebar } from '@/components/sidebar';
+import { Toaster } from "@/components/ui/toaster";
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import { Toaster } from "@/components/ui/toaster";
-import { Sidebar } from '@/components/sidebar';
-import { MobileHeader } from '@/components/mobile-header';
-import { MobileSidebar } from '@/components/mobile-sidebar';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -30,6 +31,7 @@ export default function RootLayout({
           <main className="lg:pl-64 pt-14 lg:pt-0 pb-16 lg:pb-0">
             <div className="py-10">
               {children}
+              <Analytics />
             </div>
           </main>
           <MobileSidebar />
