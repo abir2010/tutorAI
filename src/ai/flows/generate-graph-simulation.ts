@@ -86,12 +86,27 @@ const graphSimulationPrompt = ai.definePrompt({
   7. In the final step, trace back from the end node using the 'parent' property to highlight the shortest path.
 
   **Specifics for Bellman-Ford Algorithm:**
-  1. Initialize all distances to "Infinity" except for the start node, which is 0. Set all parents to null.
-  2. For |V|-1 iterations (where |V| is the number of nodes):
-     - For each edge (u, v) with weight w in the graph:
-       - If \`distance(u) + w < distance(v)\`, update \`distance(v)\` to \`distance(u) + w\` and set \`parent(v)\` to \`u\`.
-     - Show the state of distances after each full iteration over all edges. This is one step in the visualization.
-  3. After the main loop, trace back from the end node using the 'parent' property to highlight the shortest path.
+  This algorithm finds the shortest paths from a single source vertex to all of the other vertices in a weighted digraph. It is slower than Dijkstra's but more versatile. You must execute it precisely.
+  1.  **Initialization Step:**
+      - Create the first visualization step.
+      - In this step, set the distance to the start node to 0.
+      - Set the distance to all other nodes to "Infinity".
+      - Set the parent of all nodes to null.
+      - The \`stepDescription\` should be "Initialization: Set start node distance to 0 and others to Infinity."
+  2.  **Relaxation Loop:**
+      - The algorithm must iterate exactly |V| - 1 times, where |V| is the number of nodes.
+      - Each full iteration is **one step** in the visualization.
+      - In **each** iteration, you must loop through **every single edge** in the graph.
+      - For each edge from node \`u\` to node \`v\` with weight \`w\`:
+          - Check if \`distance[u] + w < distance[v]\`.
+          - **If it is**, update \`distance[v] = distance[u] + w\` and set \`parent[v] = u\`.
+      - You must show the state of the graph *after* all edges have been checked for that iteration.
+      - The \`stepDescription\` for these steps should describe the iteration number, e.g., "Iteration 1: Relaxing all edges...". You can also mention which distances were updated.
+  3.  **Final Path:**
+      - After |V| - 1 iterations are complete, create the final visualization step.
+      - Trace the path back from the \`endNode\` using the \`parent\` pointers.
+      - Set the \`color\` of all nodes and edges on the shortest path to 'path'.
+      - The \`stepDescription\` should state the final shortest path and its total weight.
 
   **For Kruskal's Algorithm:**
   - Edge properties: \`color\` ('default', 'active', 'included', 'discarded').

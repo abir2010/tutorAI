@@ -33,7 +33,7 @@ const ALGORITHMS = [
     { value: "BFS", label: "Breadth-First Search", needsStart: true, needsEnd: false },
     { value: "DFS", label: "Depth-First Search", needsStart: true, needsEnd: false },
     { value: "Dijkstra's", label: "Dijkstra's Algorithm", needsStart: true, needsEnd: true },
-    { value: "Bellman-Ford", label: "Bellman-Ford Algorithm", needsStart: true, needsEnd: false },
+    { value: "Bellman-Ford", label: "Bellman-Ford Algorithm", needsStart: true, needsEnd: true },
     { value: "Kruskal's", label: "Kruskal's Algorithm", needsStart: false, needsEnd: false },
     { value: "Floyd-Warshall", label: "Floyd-Warshall Algorithm", needsStart: false, needsEnd: false },
 ];
@@ -52,7 +52,7 @@ const defaultGraphData = `{
     {"source": "C", "target": "D", "weight": 11},
     {"source": "C", "target": "F", "weight": 2},
     {"source": "D", "target": "E", "weight": 6},
-    {"source": "E", "target": "F", "weight": 9}
+    {"source": "F", "target": "E", "weight": 9}
   ]
 }`;
 
