@@ -29,9 +29,13 @@ import type { AlgorithmSimulationOutput } from "@/ai/flows/generate-algorithm-si
 import { cn } from "@/lib/utils";
 
 const ALGORITHMS = [
-    { value: "Bubble Sort", label: "Bubble Sort" },
-    { value: "Selection Sort", label: "Selection Sort" },
-    { value: "Insertion Sort", label: "Insertion Sort" },
+    { value: "Bubble Sort", label: "Bubble Sort", type: "sort" },
+    { value: "Selection Sort", label: "Selection Sort", type: "sort" },
+    { value: "Insertion Sort", label: "Insertion Sort", type: "sort" },
+    { value: "Merge Sort", label: "Merge Sort", type: "sort" },
+    { value: "Quick Sort", label: "Quick Sort", type: "sort" },
+    { value: "Linear Search", label: "Linear Search", type: "search" },
+    { value: "Binary Search", label: "Binary Search", type: "search" },
 ];
 
 const formSchema = z.object({
@@ -44,15 +48,27 @@ const formSchema = z.object({
     } catch {
       return false;
     }
-  }, { message: "Please enter a valid comma-separated list of numbers." })
+  }, { message: "Please enter a valid comma-separated list of numbers." }),
+  target: z.string().optional(),
+}).refine(data => {
+  const selectedAlgorithm = ALGORITHMS.find(a => a.value === data.algorithm);
+  if (selectedAlgorithm?.type === 'search') {
+    return data.target !== undefined && data.target.trim() !== '' && !isNaN(Number(data.target));
+  }
+  return true;
+}, {
+  message: "Please enter a valid number to search for.",
+  path: ["target"],
 });
+
 
 type FormValues = z.infer<typeof formSchema>;
 
 type VisualizationStep = {
   array: number[];
   highlighted: number[];
-  sorted: number[];
+  sorted?: number[];
+  found_at?: number | null;
 };
 
 export default function SimulationsPage() {
@@ -65,18 +81,29 @@ export default function SimulationsPage() {
     defaultValues: {
       algorithm: "Bubble Sort",
       arrayInput: "5, 2, 8, 1, 9, 4",
+      target: "9",
     },
   });
+  
+  const algorithm = form.watch("algorithm");
+  const selectedAlgorithm = ALGORITHMS.find(a => a.value === algorithm);
 
   const onSubmit = (values: FormValues) => {
     setError(null);
     setSimulationData(null);
     startTransition(async () => {
+      
+      const parameters: {array: string, target?: number} = {
+        array: `[${values.arrayInput}]`
+      };
+
+      if (selectedAlgorithm?.type === 'search' && values.target) {
+        parameters.target = Number(values.target);
+      }
+
       const result = await handleAlgorithmSimulation({
         algorithmName: values.algorithm,
-        parameters: {
-          array: `[${values.arrayInput}]`
-        }
+        parameters: parameters
       });
       if (result.success) {
         setSimulationData(result.data);
@@ -93,7 +120,7 @@ export default function SimulationsPage() {
           <Card className="sticky top-10">
             <CardHeader>
               <CardTitle>Array Simulator</CardTitle>
-              <CardDescription>Select a sorting algorithm and provide an array to see it in action.</CardDescription>
+              <CardDescription>Select an algorithm and provide an array to see it in action.</CardDescription>
             </CardHeader>
             <CardContent>
               <Form {...form}>
@@ -104,7 +131,16 @@ export default function SimulationsPage() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Algorithm</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <Select 
+                          onValueChange={(value) => {
+                            field.onChange(value);
+                            const newAlgo = ALGORITHMS.find(a => a.value === value);
+                            if (newAlgo?.type === 'sort') {
+                              form.setValue('target', undefined);
+                            }
+                          }}
+                          defaultValue={field.value}
+                        >
                           <FormControl>
                             <SelectTrigger>
                               <SelectValue placeholder="Select an algorithm" />
@@ -133,6 +169,21 @@ export default function SimulationsPage() {
                       </FormItem>
                     )}
                   />
+                  {selectedAlgorithm?.type === 'search' && (
+                    <FormField
+                      control={form.control}
+                      name="target"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Target Value</FormLabel>
+                          <FormControl>
+                            <Input type="number" placeholder="e.g., 9" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  )}
                   <Button type="submit" className="w-full" disabled={isPending}>
                     {isPending ? (
                       <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Simulating...</>
@@ -209,13 +260,16 @@ function SimulationDisplay({ data }: { data: AlgorithmSimulationOutput }) {
            <div className="flex gap-2" style={{ transition: 'all 0.3s ease-in-out' }}>
               {currentStepData.array.map((value, index) => {
                 const isHighlighted = currentStepData.highlighted.includes(index);
-                const isSorted = currentStepData.sorted.includes(index);
+                const isSorted = currentStepData.sorted?.includes(index);
+                const isFound = currentStepData.found_at === index;
+                
                 return (
                   <div key={index} className="flex flex-col items-center gap-1">
                      <div
                         className={cn(
                           "w-12 h-12 flex items-center justify-center rounded-md border text-lg font-bold transition-all duration-300",
-                          isSorted ? "bg-accent/80 border-accent text-accent-foreground" : 
+                          isFound ? "bg-accent text-accent-foreground shadow-lg scale-110" :
+                          isSorted ? "bg-primary/20 border-primary/30" : 
                           isHighlighted ? "bg-primary/80 border-primary text-primary-foreground shadow-lg scale-110" :
                           "bg-card border-border"
                         )}
