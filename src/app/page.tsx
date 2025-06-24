@@ -27,6 +27,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Loader2, Mic, Send } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { handleTutorRequest } from "./actions";
+import type { ReasonAboutHelpfulInformationOutput } from "@/ai/flows/reason-about-helpful-information";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 
 const formSchema = z.object({
   subject: z.string().min(1, { message: "Please select a subject." }),
@@ -37,9 +40,10 @@ type FormValues = z.infer<typeof formSchema>;
 
 export default function TutorPage() {
   const [isPending, startTransition] = useTransition();
-  const [explanation, setExplanation] = useState<string | null>(null);
+  const [explanation, setExplanation] = useState<ReasonAboutHelpfulInformationOutput['explanation'] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isListening, setIsListening] = useState(false);
+  const [language, setLanguage] = useState<'english' | 'bangla'>('english');
   
   const recognitionRef = useRef<any>(null);
 
@@ -189,7 +193,21 @@ export default function TutorPage() {
           {(isPending || error || explanation) && (
             <Card className="mt-8">
               <CardHeader>
-                <CardTitle>Explanation</CardTitle>
+                <div className="flex justify-between items-center">
+                    <CardTitle>Explanation</CardTitle>
+                    {explanation && !isPending && (
+                        <div className="flex items-center space-x-2">
+                            <Label htmlFor="language-toggle" className={language === 'english' ? 'text-foreground' : 'text-muted-foreground'}>English</Label>
+                            <Switch
+                                id="language-toggle"
+                                checked={language === 'bangla'}
+                                onCheckedChange={(checked) => setLanguage(checked ? 'bangla' : 'english')}
+                                aria-label="Toggle language between English and Bangla"
+                            />
+                            <Label htmlFor="language-toggle" className={language === 'bangla' ? 'text-foreground' : 'text-muted-foreground'}>Bangla</Label>
+                        </div>
+                    )}
+                </div>
               </CardHeader>
               <CardContent>
                 {isPending && <ExplanationSkeleton />}
@@ -197,7 +215,7 @@ export default function TutorPage() {
                 {explanation && (
                   <div className="markdown">
                     <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                      {explanation}
+                      {language === 'english' ? explanation.english : explanation.bangla}
                     </ReactMarkdown>
                   </div>
                 )}
