@@ -15,7 +15,11 @@ export const metadata: Metadata = {
   title: 'TutorAI',
   description: 'Your personal AI tutor for Math, Programming, and Web Development.',
   icons: {
-    icon: '/favicon.ico',
+    icon: {
+      url: '/favicon.ico',
+      sizes: 'any',
+      type: 'image/x-icon',
+    },
   },
 };
 
