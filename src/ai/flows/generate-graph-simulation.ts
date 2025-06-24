@@ -57,7 +57,14 @@ const graphSimulationPrompt = ai.definePrompt({
   ---
   **Algorithm-Specific Visualization State:**
 
-  **For BFS and DFS:**
+  **For BFS:**
+  - This is a traversal algorithm. The goal is to visit every reachable node from the starting node. The simulation should show the full traversal process until all reachable nodes are visited.
+  - Node properties: \`color\` ('default', 'visited', 'active').
+  - Edge properties: \`color\` ('default', 'traversed').
+  - The simulation should show the active node and highlight visited nodes and traversed edges.
+
+  **For DFS:**
+  - This is a traversal algorithm, not a search for a particular node. The goal is to visit every single reachable node from the starting node. The simulation MUST show the full traversal process, exploring as far as possible along each branch before backtracking, and continue until all reachable nodes from the start node have been visited.
   - Node properties: \`color\` ('default', 'visited', 'active').
   - Edge properties: \`color\` ('default', 'traversed').
   - The simulation should show the active node and highlight visited nodes and traversed edges.
