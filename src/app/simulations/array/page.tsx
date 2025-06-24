@@ -93,11 +93,13 @@ export default function SimulationsPage() {
     setSimulationData(null);
     startTransition(async () => {
       
+      const submittedSelectedAlgorithm = ALGORITHMS.find(a => a.value === values.algorithm);
+      
       const parameters: {array: string, target?: number} = {
         array: `[${values.arrayInput}]`
       };
 
-      if (selectedAlgorithm?.type === 'search' && values.target) {
+      if (submittedSelectedAlgorithm?.type === 'search' && values.target) {
         parameters.target = Number(values.target);
       }
 

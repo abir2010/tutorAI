@@ -20,7 +20,8 @@ export async function handleAlgorithmSimulation(values: z.infer<typeof formSchem
 
   const input: AlgorithmSimulationInput = {
     algorithmName: parsed.data.algorithmName,
-    parameters: parsed.data.parameters,
+    array: parsed.data.parameters.array,
+    target: parsed.data.parameters.target,
   };
 
   try {

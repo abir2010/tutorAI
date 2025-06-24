@@ -13,7 +13,8 @@ import {z} from 'genkit';
 
 const AlgorithmSimulationInputSchema = z.object({
   algorithmName: z.string().describe('The name of the algorithm to simulate (e.g., array sorting, graph traversal).'),
-  parameters: z.record(z.any()).describe('A JSON object containing parameters specific to the selected algorithm (e.g., array size, start node).'),
+  array: z.string().describe('The array of numbers as a JSON string.'),
+  target: z.number().optional().describe('The target number for search algorithms.'),
 });
 
 export type AlgorithmSimulationInput = z.infer<typeof AlgorithmSimulationInputSchema>;
@@ -36,7 +37,10 @@ const algorithmSimulationPrompt = ai.definePrompt({
   prompt: `You are an expert in algorithms and data structures. Your task is to generate a simulation for a given algorithm and its parameters.
 
   Algorithm Name: {{{algorithmName}}}
-  Parameters: {{{parameters}}}
+  Array: {{{array}}}
+  {{#if target}}
+  Target: {{{target}}}
+  {{/if}}
 
   Provide a clear, step-by-step textual description of the simulation.
   Then, generate the visualization data as a JSON string. The JSON should be an array of objects, where each object represents one step of the algorithm.
@@ -57,7 +61,6 @@ const algorithmSimulationPrompt = ai.definePrompt({
   }
   
   **For searching algorithms:**
-  The parameters will include an "array" and a "target" value to find.
   For Binary Search, you must first include steps to sort the array if it is not already sorted, explaining that this is a prerequisite.
   Each step object must have three keys:
   1. "array": The full array at that step.
